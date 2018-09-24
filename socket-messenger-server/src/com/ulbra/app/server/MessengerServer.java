@@ -12,7 +12,7 @@ public class MessengerServer {
 
     private static final Integer SERVER_PORT = 8976;
     private static final String MESSAGE_COMMAND = "MSG";
-    private static Integer COUNT = 1;
+    private static Integer COUNT = 0;
     private static Map<String, PrintWriter> usersOutputs;
     private static List<String> messageHistory;
 
@@ -26,11 +26,17 @@ public class MessengerServer {
             new CronSaveHistory(messageHistory).start();
             for(;;){
                 new UserClient(server.accept()).start();
-                System.out.println(COUNT++);
+                COUNT++;
+                printAmountActiveClients();
+
             }
         } catch (IOException ex) {
             System.out.println("Erro na conexao: " + ex.getMessage());
         }
+    }
+
+    private void printAmountActiveClients(){
+        System.out.println("Active clients: " + COUNT);
     }
 
 
@@ -63,12 +69,15 @@ public class MessengerServer {
                         } else {
                             output.println("ERRO Nickname em uso.");
                         }
+
                     } else if(option.startsWith("MSG")){
                         sendMessageToAllClients(nickname, line);
+
                     } else if(option.startsWith("SAIR")){
                         logoutChat(nickname);
                         notifyAllClients(nickname, false);
                         break;
+
                     } else {
                         output.println("Comando invalido.");
                     }
@@ -84,6 +93,8 @@ public class MessengerServer {
 
         private synchronized void logoutChat(String nickname) {
             usersOutputs.remove(nickname);
+            COUNT--;
+            printAmountActiveClients();
             Thread.currentThread().interrupt();
         }
 

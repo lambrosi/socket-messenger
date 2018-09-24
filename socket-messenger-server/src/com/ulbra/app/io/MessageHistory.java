@@ -30,11 +30,18 @@ public class MessageHistory {
     }
 
     public static void writeHistory(List<String> currentHistory){
+        File directory = new File(getHomePath() + File.separator + FOLDER_NAME);
+        if(!directory.exists()){
+            directory.mkdir();
+        }
+
         File file = new File(FULL_PATH);
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file))){
             outputStream.writeObject(currentHistory);
         } catch (IOException ex){
-            System.out.println("Erro na gravacao: " + ex.getMessage());
+            System.out.println(
+                    "Erro na gravacao: " + ex.getMessage() + "\n" +
+                    "Lembre-se que deve existir a pasta \"chat-history\" na raiz do usuario atual (" + getHomePath()+")");
         }
     }
 

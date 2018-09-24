@@ -13,12 +13,13 @@ import java.util.Scanner;
 public class MessengerClient {
 
     public static void main(String[] args) {
-//        Scanner input = new Scanner(System.in);
+        System.out.print("====================================\n");
         System.out.print("Informe o IP do servidor: ");
         String host = new Scanner(System.in).nextLine();
 
         System.out.print("Informe a porta: ");
         Integer port = new Scanner(System.in).nextInt();
+        System.out.print("====================================\n\n");
 
         try (Socket s = new Socket(host, port);
              BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));

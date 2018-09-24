@@ -16,7 +16,7 @@ public class Printer extends Thread {
         try {
             output.lines().forEach(System.out::println);
         } catch (UncheckedIOException ex){
-            System.out.println("DEBUG socket encerrado.");
+            System.out.println();
         }
     }
 }
